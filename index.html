@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> SugarFree </title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --surface: #F7FAFF;
+    --font-color: #1A2B86;
+    --muted: #1A2B86;
+    --primary: #1A2B86;
+    --shape-line: #D2E1FF;
+    --color-on-click: #EEE8FF;
+    --anything-bold-yellow: #1A2B86;
+    --gold-wash: #EEE8FF;
+    --coral: #E15252;
+    --coral-wash: #FBE4E1;
+    --line: #657AD5;
+    --ink: #1A2B86;
+    --gold: #1A2B86;
+    --primary-light: #657AD5;
+    --primary-wash: #EEE8FF;
+    --radius-s: 10px;
+    --radius-m: 16px;
+    --radius-l: 24px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:100vh;
+    padding: 24px 12px;
+  }
+  h1,h2,h3, .display{
+    font-family: 'Bricolage Grotesque', sans-serif;
+  }
+  .phone{
+    width: 390px;
+    max-width: 100%;
+    background: var(--bg);
+    border-radius: 40px;
+    border: 8px solid #14201A;
+    box-shadow: 0 30px 60px -20px rgba(20,32,26,0.45);
+    overflow: hidden;
+    position: relative;
+    display:flex;
+    flex-direction:column;
+    height: 820px;
+  }
+  .statusbar{
+    height: 30px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 0 26px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    flex-shrink:0;
+  }
+  .notch{
+    position:absolute;
+    top:0; left:50%;
+    transform: translateX(-50%);
+    width: 120px; height: 22px;
+    background:#14201A;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    z-index: 5;
+  }
+  .screen{
+    flex:1;
+    overflow-y: auto;
+    padding: 6px 20px 100px;
+    scrollbar-width: none;
+  }
+  .screen::-webkit-scrollbar{ display:none; }
+
+  /* ---------- header ---------- */
+  .top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 10px 0 18px;
+  }
+  .greeting .eyebrow{
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .greeting h1{
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .streak-pill{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-weight:600;
+    font-size: 14px;
+  }
+  .streak-pill svg{ width:16px; height:16px; }
+
+  /* ---------- growth ring card ---------- */
+  .growth-card{
+    background: var(--primary);
+    border-radius: var(--radius-l);
+    padding: 22px;
+    color: #F3F6F1;
+    display:flex;
+    align-items:center;
+    gap: 18px;
+    margin-bottom: 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .growth-card::after{
+    content:"";
+    position:absolute;
+    right:-30px; bottom:-40px;
+    width:160px; height:160px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+  }
+  .ring{
+    width: 78px; height:78px; flex-shrink:0;
+  }
+  .growth-text .stage{
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    color: #D2E1FF;
+    margin-bottom: 3px;
+  }
+  .growth-text h2{
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .growth-text p{
+    font-size: 13px;
+    color: #D2E1FF;
+  }
+
+  /* ---------- section heading ---------- */
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin: 22px 0 12px;
+  }
+  .section-head h3{
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .section-head span{
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .section-head-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .add-btn{
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: none;
+    color: #F3F6F1;
+    font-size: 18px;
+    line-height: 1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    transition: transform .15s ease;
+  }
+  .add-btn:active{ transform: scale(0.92); }
+  .add-btn svg{ width:16px; height:16px; }
+
+  /* ---------- add quest form ---------- */
+  .add-form{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 16px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .add-form.open{ display:block; animation: fadein .2s ease; }
+  .add-form .field{ margin-bottom: 12px; }
+  .add-form .field:last-of-type{ margin-bottom: 0; }
+  .add-form label{
+    display:block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .add-form input[type="text"],
+  .add-form select{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--bg);
+  }
+  .add-form input[type="text"]:focus,
+  .add-form select:focus{
+    outline: 2px solid var(--primary-light);
+    outline-offset: 1px;
+  }
+  .add-form .field-row{
+    display:flex;
+    gap: 10px;
+  }
+  .add-form .field-row .field{ flex:1; }
+  .add-form-actions{
+    display:flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .btn-primary, .btn-ghost{
+    flex:1;
+    padding: 11px;
+    border-radius: var(--radius-s);
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary{ background: var(--primary); color: #F3F6F1; }/* means button */
+  .btn-primary:active{ transform: scale(0.98); }
+  .btn-ghost{ background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+
+  /* ---------- quest rows ---------- */
+  .quest{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 14px;
+    margin-bottom: 10px;
+    transition: transform .15s ease, background .2s ease;
+  }
+  .quest.done{
+    background: var(--primary-wash);
+    border-color: transparent;
+  }
+  .quest:active{ transform: scale(0.98); }
+  .check{
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-light);
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    background: transparent;
+    transition: all .15s ease;
+  }
+  .quest.done .check{
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+  .check svg{
+    width:14px; height:14px;
+    opacity:0;
+    transition: opacity .15s ease;
+  }
+  .quest.done .check svg{ opacity:1; }
+  .quest-body{ flex:1; min-width:0; }
+  .quest-body .name{
+    font-weight: 600;
+    font-size: 14.5px;
+    margin-bottom: 2px;
+  }
+  .quest.done .quest-body .name{
+    color: var(--primary);
+  }
+  .quest-body .meta{
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .xp-tag{
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    background: var(--gold-wash);
+    padding: 4px 9px;
+    border-radius: 999px;
+    flex-shrink:0;
+  }
+  .custom-tag{
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ---------- category label ---------- */
+  .cat-label{
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: none;
+    margin: 18px 0 8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .cat-label:first-of-type{ margin-top: 4px; }
+  .cat-dot{ width:6px; height:6px; border-radius:50%; }
+
+  /* ---------- restaurant cards ---------- */
+  .restaurant{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .restaurant .row1{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap: 10px;
+  }
+  .restaurant h4{
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .restaurant .sub{
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .rating{
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    white-space:nowrap;
+  }
+  .tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .tag{
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--primary-wash);
+    color: var(--primary);
+  }
+  .tag.gold{ background: var(--gold-wash); color:#1A2B86; }
+
+  .picks-box{
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+  }
+  .picks-box .picks-title{
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .pick-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap: 10px;
+    padding: 7px 0;
+  }
+  .pick-item + .pick-item{
+    border-top: 1px solid var(--line);
+  }
+  .pick-item .pick-name{
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .pick-item .pick-why{
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .pick-item .pick-mark{
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-wash);
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ---------- progress screen ---------- */
+  .badge-grid{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .badge{
+    background: var(--surface);
+    border:1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 14px;
+    text-align:left;
+  }
+  .badge.locked{ opacity: 0.45; }
+  .badge .icon{
+    width: 34px; height:34px;
+    border-radius: 10px;
+    background: var(--gold-wash);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom: 8px;
+  }
+  .badge .icon svg{ width:18px; height:18px; }
+  .badge .name{ font-weight:700; font-size: 13px; margin-bottom:2px;}
+  .badge .desc{ font-size: 11.5px; color: var(--muted); }
+
+  .bars{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    height: 120px;
+    background: var(--surface);
+    border:1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 16px 18px 12px;
+    margin-bottom: 18px;
+  }
+  .bar-col{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 8px;
+    flex:1;
+  }
+  .bar-track{
+    width: 12px;
+    height: 74px;
+    background: var(--primary-wash);
+    border-radius: 6px;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+  }
+  .bar-fill{
+    width:100%;
+    background: var(--primary);
+    border-radius: 6px;
+  }
+  .bar-col span{ font-size: 11px; color: var(--muted); font-weight:600; }
+
+  .consistency-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+  .consistency-card .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom: 10px;
+  }
+  .consistency-card h3{ font-size: 15px; font-weight:700; }
+  .consistency-card .pct{ font-size: 22px; font-weight:800; color: var(--primary); }
+  .track{
+    width:100%; height: 8px;
+    background: var(--primary-wash);
+    border-radius: 999px;
+    overflow:hidden;
+  }
+  .track-fill{
+    height:100%;
+    background: linear-gradient(90deg, var(--primary-light), var(--primary));
+    border-radius: 999px;
+  }
+  .note{
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  /* ---------- bottom nav ---------- */
+  .tabbar{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    display:flex;
+    padding: 10px 8px calc(14px);
+    z-index: 10;
+  }
+  .tab{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 4px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    color: var(--muted);
+    font-family:'Inter',sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 4px 0;
+  }
+  .tab svg{ width:22px; height:22px; }
+  .tab.active{ color: var(--primary); }
+
+  .view{ display:none; }
+  .view.active{ display:block; animation: fadein .25s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- scan screen ---------- */
+  .scan-cta{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    background: var(--primary);
+    color: #F3F6F1;
+    border: none;
+    border-radius: var(--radius-l);
+    padding: 18px;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 6px;
+    text-align:left;
+    font-family:'Inter',sans-serif;
+  }
+  .scan-cta .icon-wrap{
+    width: 44px; height:44px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.14);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .scan-cta .icon-wrap svg{ width:22px; height:22px; }
+  .scan-cta .label{ font-weight:700; font-size: 14.5px; margin-bottom:2px; }
+  .scan-cta .sub{ font-size: 12px; color:#D2E1FF; }
+  .scan-cta.loading .label::after{ content:"…"; }
+
+  .scan-disclaimer{
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 10px 2px 4px;
+  }
+
+  .product-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    margin-bottom: 12px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .product-card.new{ animation: dropin .4s ease; }
+  @keyframes dropin{ from{opacity:0; transform: translateY(-10px);} to{opacity:1; transform:translateY(0);} }
+
+  .product-top{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    padding: 14px;
+  }
+  .verdict-dot{
+    width: 40px; height:40px;
+    border-radius: 12px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    font-size: 16px;
+  }
+  .verdict-dot.good{ background: var(--primary-wash); }
+  .verdict-dot.caution{ background: var(--gold-wash); }
+  .verdict-dot.avoid{ background: var(--coral-wash); }
+  .product-info{ flex:1; min-width:0; }
+  .product-info .pname{ font-weight:700; font-size:14px; margin-bottom:1px; }
+  .product-info .pbrand{ font-size:12px; color: var(--muted); }
+  .verdict-chip{
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .verdict-chip.good{ background: var(--primary-wash); color: var(--primary); }
+  .verdict-chip.caution{ background: var(--gold-wash); color: #9C6A16; }
+  .verdict-chip.avoid{ background: var(--coral-wash); color: #B23A3A; }
+
+  .product-detail{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+    border-top: 1px solid var(--line);
+  }
+  .product-card.expanded .product-detail{ max-height: 520px; }
+  .product-detail-inner{ padding: 14px; }
+
+  .metrics-grid{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .metric{
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align:center;
+  }
+  .metric .val{ font-weight:800; font-size: 14px; }
+  .metric .lab{ font-size: 10px; color: var(--muted); margin-top:1px; }
+
+  .flag-row{ margin-bottom: 10px; }
+  .flag-row .title{ font-size:12px; font-weight:700; color: var(--muted); margin-bottom:6px; }
+  .chip-list{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 999px;
+  }
+  .chip.flag{ background: var(--coral-wash); color:#B23A3A; }
+  .chip.good{ background: var(--primary-wash); color: var(--primary); }
+
+  .alt-box{
+    background: #EEE8FF;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    color: #1A2B86;
+    margin-top: 4px;
+  }
+  .alt-box b{ font-weight: 700; }
+
+  .xp-float{
+    position:absolute;
+    font-weight:800;
+    color: var(--gold);
+    font-size: 14px;
+    pointer-events:none;
+    animation: floatup .8s ease forwards;
+    z-index: 20;
+  }
+  @keyframes floatup{
+    0%{ opacity:0; transform: translateY(0); }
+    15%{ opacity:1; }
+    100%{ opacity:0; transform: translateY(-26px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span>9:41</span>
+    <span>SugarFree</span>
+    <span>100%</span>
+  </div>
+
+  <div class="screen" id="screen">
+
+    <!-- ============ TODAY ============ -->
+    <div class="view active" id="view-today">
+      <div class="top">
+        <div class="greeting">
+          <div class="eyebrow">Wednesday, February 30 </div>
+          <h1>Morning, Liz </h1>
+        </div>
+        <div class="streak-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1A2B86" stroke-width="2"><path d="M12 2C9 7 6 10 6 14a6 6 0 0012 0c0-2-1-3-2-4 .3 2-1 3-2 2 1-3-1-5-2-10z"/></svg>
+          <span id="streak-count">12</span>
+        </div>
+      </div>
+
+      <div class="growth-card">
+        <svg class="ring" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="34" stroke="rgba(255,255,255,0.2)" stroke-width="7" fill="none"/>
+          <circle id="ring-fill" cx="40" cy="40" r="34" stroke="#D2E1FF" stroke-width="7" fill="none"
+            stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="90"
+            transform="rotate(-90 40 40)"/>
+          <text x="40" y="45" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="Inter">L3</text>
+        </svg>
+        <div class="growth-text">
+          <div class="stage">Growth stage · Sapling</div>
+          <h2 id="xp-label">560 / 800 XP</h2>
+          <p>240 XP to reach "Awesome!" </p>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h3>Today's quests</h3>
+        <span id="today-progress">2 / 5 done</span>
+      </div>
+
+      <div id="today-list"></div>
+    </div>
+
+    <!-- ============ QUESTS ============ -->
+    <div class="view" id="view-quests">
+      <div class="top">
+        <div class="greeting">
+          <div class="eyebrow">All habits</div>
+          <h1> Quest log</h1>
+        </div>
+      </div>
+
+      <div class="section-head-row">
+        <h3>Add your own goal to grow your quest log</h3>
+        <button class="add-btn" id="add-quest-btn" onclick="toggleAddForm()" aria-label="Add a goal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+
+      <div class="add-form" id="add-form">
+        <div class="field">
+          <label for="new-quest-name">Goal name</label>
+          <input type="text" id="new-quest-name" placeholder="e.g. Stretch before bed" maxlength="60">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="new-quest-cat">Category</label>
+            <select id="new-quest-cat">
+              <option value="nutrition">Nutrition</option>
+              <option value="movement">Movement</option>
+              <option value="monitor">Monitoring</option>
+              <option value="mind">Mindfulness</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="new-quest-freq">Frequency</label>
+            <select id="new-quest-freq">
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="new-quest-xp">XP reward</label>
+          <select id="new-quest-xp">
+            <option value="10">10 XP · quick habit</option>
+            <option value="15" selected>15 XP · standard habit</option>
+            <option value="20">20 XP · bigger effort</option>
+            <option value="30">30 XP · major commitment</option>
+          </select>
+        </div>
+        <div class="add-form-actions">
+          <button class="btn-ghost" onclick="toggleAddForm(false)">Cancel</button>
+          <button class="btn-primary" onclick="addCustomQuest()">Add goal</button>
+        </div>
+      </div>
+
+      <div id="quests-list"></div>
+    </div>
+
+    <!-- ============ SCAN ============ -->
+    <div class="view" id="view-scan">
+      <div class="top">
+        <div class="greeting">
+          <div class="eyebrow"> Scan your packaged food </div>
+          <h1> Let's scan and check </h1>
+        </div>
+      </div>
+
+      <button class="scan-cta" id="scan-btn" onclick="scanProduct()">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F3F6F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3"/><path d="M7 9v6M10 9v6M13 9v3M16 9v6"/></svg>
+        </div>
+        <div>
+          <div class="label" id="scan-btn-label">Scan ingredient label</div>
+          <div class="sub">Point at the barcode or ingredients list</div>
+        </div>
+      </button>
+      <p class="scan-disclaimer"> Please do not use this in place of professional medical advice.</p>
+
+      <div class="section-head">
+        <h3>Recent scans</h3>
+        <span id="scan-count">0 items</span>
+      </div>
+      <div id="scan-list"></div>
+    </div>
+
+    <!-- ============ EAT ============ -->
+    <div class="view" id="view-eat">
+      <div class="top">
+        <div class="greeting">
+          <div class="eyebrow">Near District 7, HCMC</div>
+          <h1> Where to eat </h1>
+        </div>
+      </div>
+      <div id="restaurant-list"></div>
+    </div>
+
+    <!-- ============ PROGRESS ============ -->
+    <div class="view" id="view-progress">
+      <div class="top">
+        <div class="greeting">
+          <div class="eyebrow">This week</div>
+          <h1>Your growth</h1>
+        </div>
+      </div>
+
+      <div class="consistency-card">
+        <div class="row">
+          <h3>7-day streak</h3>
+          <div class="pct">86%</div>
+        </div>
+        <div class="track"><div class="track-fill" style="width:86%"></div></div>
+      </div>
+
+      <div class="bars" id="week-bars"></div>
+
+      <div class="section-head">
+        <h3> Where we got  </h3>
+        <span>4 of 8 earned</span>
+      </div>
+      <div class="badge-grid" id="badge-grid"></div>
+    </div>
+
+  </div>
+
+  <div class="tabbar">
+    <button class="tab active" data-view="today">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg>
+      Today
+    </button>
+    <button class="tab" data-view="quests">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg>
+      Quests
+    </button>
+    <button class="tab" data-view="scan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3"/><path d="M7 9v6M10 9v6M13 9v3M16 9v6"/></svg>
+      Scan
+    </button>
+    <button class="tab" data-view="eat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v7M5 3v7a2 2 0 002 2 2 2 0 002-2V3M17 3c-1.5 0-3 1.5-3 4v4h2v6"/></svg>
+      Eat
+    </button>
+    <button class="tab" data-view="progress">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M12 19V5M20 19v-7"/></svg>
+      Progress
+    </button>
+  </div>
+</div>
+
+<script>
+// ---------------- data ----------------
+const CATS = {
+  nutrition: {label: "Nutrition", color: "#3F7A63"},
+  movement:  {label: "Movement", color: "#E3A23C"},
+  monitor:   {label: "Monitoring", color: "#E15252"},
+  mind:      {label: "Mindfulness", color: "#7C8CD6"},
+};
+
+let nextQuestId = 100;
+
+let quests = [
+  {id:1, name:"Eat lean protein", meta:"Nutrition · daily", xp:15, cat:"nutrition", done:true},
+  {id:2, name:"30-minute brisk walking/cycling", meta:"Movement · daily", xp:20, cat:"movement", done:true},
+  {id:3, name:"Choose dark chocolate over white chocolate", meta:"Nutrition · daily", xp:10, cat:"nutrition", done:false},
+  {id:4, name:"1 Blood sugar check", meta:"Monitoring · daily", xp:15, cat:"monitor", done:false},
+  {id:10, name:"2 Blood sugar checks", meta:"Monitoring · daily", xp:25, cat:"monitor", done:false},
+  {id:11, name:"Take prescribed medicines", meta:"Monitoring · daily", xp:30, cat:"monitor", done:false},
+  {id:5, name:"5-minute mindful breathing", meta:"Mindfulness · daily", xp:15, cat:"mind", done:false},
+  {id:12, name:"Talk to someone about your worries", meta:"Mindfulness · daily", xp:20, cat:"mind", done:false},
+  {id:6, name:"Swap sugary drinks for water", meta:"Nutrition · daily", xp:15, cat:"nutrition", done:false},
+  {id:7, name:"Take the stairs today", meta:"Movement · daily", xp:10, cat:"movement", done:false},
+  {id:8, name:"Eat nonstarchy veggies", meta:"Nutrition · daily", xp:20, cat:"nutrition", done:false},
+  {id:9, name:"Evening foot check", meta:"Monitoring · weekly", xp:20, cat:"monitor", done:false},
+
+];
+
+const restaurants = [
+  {
+    name:"Soumaki", sub:"Healthy bowls · 1.2 km · 100k VND-200k VND", rating:"4.6",
+    tags:["Low-fat","High-protein"],
+    picks:[
+      {name:"Full cajun chicken, spinach, broccoli", why:"High protein, optional sauce"},
+      {name:"Salmon, donburi brown rice, spinach", why:"Nonstarchy veggie, easy on sodium, optional sauce", mark:"Best pick"},
+      {name:"Ask for sauce on the side", why:"Keeps sodium in your control"},
+    ]
+  },
+  {
+    name:"Soumaki", sub:"Healthy bowls · 1.2 km · 100k VND-200k VND", rating:"4.6",
+    tags:["Low-fat","High-protein"],
+    picks:[
+      {name:"Full cajun chicken, spinach, broccoli", why:"High protein, optional sauce"},
+      {name:"Salmon, donburi brown rice, spinach", why:"Nonstarchy veggie, easy on sodium, optional sauce", mark:"Best pick"},
+      {name:"Ask for sauce on the side", why:"Keeps sodium in your control"},
+    ]
+  }
+];
+
+const badges = [
+  {name:"Early Riser", desc:"7 days of morning check-ins", earned:true},
+  {name:"Hydration Hero", desc:"8 glasses, 5 days running", earned:true},
+  {name:"Step Streak", desc:"10-day movement streak", earned:true},
+  {name:"Mindful Week", desc:"7 days of breathing breaks", earned:true},
+  {name:"Plate Balance", desc:"14 balanced meals logged", earned:false},
+  {name:"Foot Care Pro", desc:"4 weekly foot checks", earned:false},
+  {name:"Steady 30", desc:"30-day overall consistency", earned:false},
+  {name:"Community Sprout", desc:"Invite a friend to grow", earned:false},
+];
+
+const weekData = [
+  {d:"M", pct:70}, {d:"T", pct:85}, {d:"W", pct:60}, {d:"T", pct:95},
+  {d:"F", pct:80}, {d:"S", pct:55}, {d:"S", pct:40},
+];
+
+let totalXP = 560;
+const XP_MAX = 800;
+
+// ---------------- packaged food scan data ----------------
+const scanPool = [
+  {name:"Plain Yogurt", brand:"Vinamilk", verdict:"good",
+   sugar:"0g", carbs:"4.5g", fiber:"3g", gi:"Low", sodium:"49mg",
+   flags:[], good:["No added sugar","Fiber + healthy fats slow sugar absorption"],
+   alt:"Already a solid pick — a small handful (28g) is a good portion."},
+  {name:"Instant Noodle Cup", brand:"QuickMeal", verdict:"avoid",
+   sugar:"2g", carbs:"55g", fiber:"1g", gi:"High", sodium:"1780mg",
+   flags:["Very high sodium (1780mg)","Refined wheat flour, low fiber","Contains MSG"],
+   good:[], alt:"Whole-grain noodles in a light broth with vegetables cuts sodium and carbs a lot."},
+  {name:"Greek Yogurt, Plain Unsweetened", brand:"Dairy Farm Co.", verdict:"good",
+   sugar:"4g (natural)", carbs:"6g", fiber:"0g", gi:"Low", sodium:"50mg",
+   flags:[], good:["No added sugar","High protein helps blunt blood sugar spikes"],
+   alt:"Great as-is — add cinnamon or a few berries for flavor instead of sweetened versions."},
+  {name:"Fruit-Flavored Gummy Snacks", brand:"Chewy Bites", verdict:"avoid",
+   sugar:"19g", carbs:"22g", fiber:"0g", gi:"High", sodium:"10mg",
+   flags:["Corn syrup is the first ingredient","Artificial dyes","No fiber to offset sugar"],
+   good:[], alt:"Fresh berries or apple slices give sweetness plus fiber to soften the sugar hit."},
+  {name:"Plain Rice Crackers", brand:"Riceland", verdict:"caution",
+   sugar:"0g", carbs:"24g", fiber:"1g", gi:"Medium-High", sodium:"180mg",
+   flags:["Refined white rice, very low fiber","Moderate sodium"],
+   good:["No added sugar"], alt:"Whole-grain seeded crackers offer more fiber for a similar crunch."},
+];
+let scannedProducts = [scanPool[1], scanPool[3]];
+let scanCycle = 0;
+
+// ---------------- render ----------------
+function checkIcon(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+}
+
+function badgeIcon(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="#1A2B86" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z"/></svg>';
+}
+
+function renderQuestRow(q){
+  return `
+  <div class="quest ${q.done ? 'done':''}" data-id="${q.id}">
+    <div class="check" onclick="toggleQuest(${q.id}, event)">${checkIcon()}</div>
+    <div class="quest-body">
+      <div class="name">${q.name}</div>
+      ${q.custom ? '<div class="custom-tag">Your goal</div>' : ''}
+    </div>
+    <div class="xp-tag">+${q.xp} XP</div>
+  </div>`;
+}
+
+function renderToday(){
+  const todays = quests.slice(0,5);
+  document.getElementById('today-list').innerHTML = todays.map(renderQuestRow).join('');
+  const done = todays.filter(q=>q.done).length;
+  document.getElementById('today-progress').textContent = `${done} / ${todays.length} done`;
+}
+
+function renderQuests(){
+  let html = '';
+  Object.entries(CATS).forEach(([key, cat]) => {
+    const items = quests.filter(q => q.cat === key);
+    if(!items.length) return;
+    html += `<div class="cat-label"><span class="cat-dot" style="background:${cat.color}"></span>${cat.label}</div>`;
+    html += items.map(renderQuestRow).join('');
+  });
+  document.getElementById('quests-list').innerHTML = html;
+}
+
+function toggleAddForm(open){
+  const form = document.getElementById('add-form');
+  const shouldOpen = open === undefined ? !form.classList.contains('open') : open;
+  form.classList.toggle('open', shouldOpen);
+  if(shouldOpen){
+    document.getElementById('new-quest-name').focus();
+  } else {
+    document.getElementById('new-quest-name').value = '';
+  }
+}
+
+function addCustomQuest(){
+  const nameInput = document.getElementById('new-quest-name');
+  const name = nameInput.value.trim();
+  if(!name){
+    nameInput.focus();
+    return;
+  }
+  const cat = document.getElementById('new-quest-cat').value;
+  const freq = document.getElementById('new-quest-freq').value;
+  const xp = parseInt(document.getElementById('new-quest-xp').value, 10);
+  const catLabel = CATS[cat].label;
+  const freqLabel = freq === 'daily' ? 'daily' : 'weekly';
+
+  quests.push({
+    id: nextQuestId++,
+    name,
+    meta: `${catLabel} · ${freqLabel}`,
+    xp,
+    cat,
+    done: false,
+    custom: true,
+  });
+
+  nameInput.value = '';
+  document.getElementById('new-quest-xp').value = '15';
+  document.getElementById('new-quest-freq').value = 'daily';
+  toggleAddForm(false);
+  renderQuests();
+  renderToday();
+}
+
+function renderRestaurants(){
+  document.getElementById('restaurant-list').innerHTML = restaurants.map(r => `
+    <div class="restaurant">
+      <div class="row1">
+        <div>
+          <h4>${r.name}</h4>
+          <div class="sub">${r.sub}</div>
+        </div>
+        <div class="rating">★ ${r.rating}</div>
+      </div>
+      <div class="tags">
+        ${r.tags.map(t => `<span class="tag ${t==='High-fiber'||t==='High-protein'?'gold':''}">${t}</span>`).join('')}
+      </div>
+      ${r.picks && r.picks.length ? `
+      <div class="picks-box">
+        <div class="picks-title">What to order</div>
+        ${r.picks.map(p => `
+          <div class="pick-item">
+            <div>
+              <div class="pick-name">${p.name}</div>
+              <div class="pick-why">${p.why}</div>
+            </div>
+            ${p.mark ? `<span class="pick-mark">${p.mark}</span>` : ''}
+          </div>
+        `).join('')}
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderProgress(){
+  document.getElementById('week-bars').innerHTML = weekData.map(w => `
+    <div class="bar-col">
+      <div class="bar-track"><div class="bar-fill" style="height:${w.pct}%"></div></div>
+      <span>${w.d}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('badge-grid').innerHTML = badges.map(b => `
+    <div class="badge ${b.earned ? '' : 'locked'}">
+      <div class="icon">${badgeIcon()}</div>
+      <div class="name">${b.name}</div>
+      <div class="desc">${b.desc}</div>
+    </div>
+  `).join('');
+}
+
+function verdictMeta(v){
+  if(v === "good") return {label:"Good choice", emoji:"✓"};
+  if(v === "caution") return {label:"Use caution", emoji:"!"};
+  return {label:"Better to avoid", emoji:"×"};
+}
+
+function renderScan(){
+  document.getElementById('scan-count').textContent = `${scannedProducts.length} item${scannedProducts.length===1?'':'s'}`;
+  document.getElementById('scan-list').innerHTML = scannedProducts.map((p, i) => {
+    const vm = verdictMeta(p.verdict);
+    return `
+    <div class="product-card ${i===0 && p._new ? 'new' : ''}" onclick="toggleProduct(${i})">
+      <div class="product-top">
+        <div class="verdict-dot ${p.verdict}">${vm.emoji}</div>
+        <div class="product-info">
+          <div class="pname">${p.name}</div>
+          <div class="pbrand">${p.brand}</div>
+        </div>
+        <div class="verdict-chip ${p.verdict}">${vm.label}</div>
+      </div>
+      <div class="product-detail" id="detail-${i}">
+        <div class="product-detail-inner">
+          <div class="metrics-grid">
+            <div class="metric"><div class="val">${p.sugar}</div><div class="lab">Sugar</div></div>
+            <div class="metric"><div class="val">${p.carbs}</div><div class="lab">Carbs</div></div>
+            <div class="metric"><div class="val">${p.fiber}</div><div class="lab">Fiber</div></div>
+            <div class="metric"><div class="val">${p.gi}</div><div class="lab"> Glycemic index (GI) </div></div>
+            <div class="metric"><div class="val">${p.sodium}</div><div class="lab">Sodium</div></div>
+          </div>
+          ${p.flags.length ? `
+          <div class="flag-row">
+            <div class="title">Watch out for</div>
+            <div class="chip-list">${p.flags.map(f => `<span class="chip flag">${f}</span>`).join('')}</div>
+          </div>` : ''}
+          ${p.good.length ? `
+          <div class="flag-row">
+            <div class="title">Working in its favor</div>
+            <div class="chip-list">${p.good.map(g => `<span class="chip good">${g}</span>`).join('')}</div>
+          </div>` : ''}
+          <div class="alt-box"><b>Swap idea:</b> ${p.alt}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleProduct(i){
+  const card = document.querySelectorAll('#scan-list .product-card')[i];
+  card.classList.toggle('expanded');
+}
+
+function scanProduct(){
+  const btn = document.getElementById('scan-btn');
+  const label = document.getElementById('scan-btn-label');
+  btn.classList.add('loading');
+  label.textContent = "Scanning";
+  btn.disabled = true;
+
+  setTimeout(() => {
+    const next = scanPool[scanCycle % scanPool.length];
+    scanCycle++;
+    const copy = Object.assign({}, next, {_new:true});
+    scannedProducts = scannedProducts.filter(p => p.name !== copy.name);
+    scannedProducts.unshift(copy);
+    renderScan();
+    btn.classList.remove('loading');
+    label.textContent = "Scan ingredient label";
+    btn.disabled = false;
+  }, 900);
+}
+
+function updateRing(){
+  const circumference = 213.6;
+  const pct = Math.min(totalXP / XP_MAX, 1);
+  document.getElementById('ring-fill').setAttribute('stroke-dashoffset', circumference * (1-pct));
+  document.getElementById('xp-label').textContent = `${totalXP} / ${XP_MAX} XP`;
+}
+
+function toggleQuest(id, evt){
+  const q = quests.find(x => x.id === id);
+  if(!q) return;
+  const wasDone = q.done;
+  q.done = !q.done;
+  totalXP += q.done ? q.xp : -q.xp;
+  totalXP = Math.max(0, totalXP);
+
+  if(!wasDone && evt){
+    const float = document.createElement('div');
+    float.className = 'xp-float';
+    float.textContent = `+${q.xp} XP`;
+    const rect = evt.target.closest('.check').getBoundingClientRect();
+    const screenRect = document.getElementById('screen').getBoundingClientRect();
+    float.style.left = (rect.left - screenRect.left + 30) + 'px';
+    float.style.top = (rect.top - screenRect.top) + 'px';
+    document.getElementById('screen').appendChild(float);
+    setTimeout(() => float.remove(), 800);
+  }
+
+  updateRing();
+  renderToday();
+  renderQuests();
+}
+
+// ---------------- nav ----------------
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('view-' + tab.dataset.view).classList.add('active');
+    document.getElementById('screen').scrollTop = 0;
+  });
+});
+
+renderToday();
+renderQuests();
+renderRestaurants();
+renderProgress();
+renderScan();
+updateRing();
+</script>
+
+</body>
+</html>
