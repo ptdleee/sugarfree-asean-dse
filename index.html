@@ -895,13 +895,13 @@ let quests = [
   {id:4, name:"1 Blood sugar check", meta:"Monitoring · daily", xp:15, cat:"monitor", done:false},
   {id:10, name:"2 Blood sugar checks", meta:"Monitoring · daily", xp:25, cat:"monitor", done:false},
   {id:11, name:"Take prescribed medicines", meta:"Monitoring · daily", xp:30, cat:"monitor", done:false},
-  {id:5, name:"5-minute mindful breathing", meta:"Mindfulness · daily", xp:15, cat:"mind", done:false},
+  {id:5, name:"5-minute meditation", meta:"Mindfulness · daily", xp:15, cat:"mind", done:false},
   {id:12, name:"Talk to someone about your worries", meta:"Mindfulness · daily", xp:20, cat:"mind", done:false},
   {id:6, name:"Swap sugary drinks for water", meta:"Nutrition · daily", xp:15, cat:"nutrition", done:false},
   {id:7, name:"Take the stairs today", meta:"Movement · daily", xp:10, cat:"movement", done:false},
   {id:8, name:"Eat nonstarchy veggies", meta:"Nutrition · daily", xp:20, cat:"nutrition", done:false},
   {id:9, name:"Evening foot check", meta:"Monitoring · weekly", xp:20, cat:"monitor", done:false},
-
+  {id:13, name:"Morning foot check", meta:"Monitoring · weekly", xp:20, cat:"monitor", done:false},
 ];
 
 const restaurants = [
@@ -915,25 +915,24 @@ const restaurants = [
     ]
   },
   {
-    name:"Soumaki", sub:"Healthy bowls · 1.2 km · 100k VND-200k VND", rating:"4.6",
-    tags:["Low-fat","High-protein"],
+    name:"Vinamilk store", sub:"Dairy store · 0.5 km · 1-100k VND", rating:"4.9",
+    tags:["Affordable"],
     picks:[
-      {name:"Full cajun chicken, spinach, broccoli", why:"High protein, optional sauce"},
-      {name:"Salmon, donburi brown rice, spinach", why:"Nonstarchy veggie, easy on sodium, optional sauce", mark:"Best pick"},
-      {name:"Ask for sauce on the side", why:"Keeps sodium in your control"},
+      {name:"Green Farm Organic - UHT Fresh Milk", why:"High protein, optional sauce", mark:"Best pick"},
+      {name:"Plain Yogurt", why:"Good for digestion, immune system"},
+      {name:"Ask for staff's advice", why:"Keeps carbohydrate in your control"},
     ]
-  }
+  },
 ];
 
 const badges = [
-  {name:"Early Riser", desc:"7 days of morning check-ins", earned:true},
-  {name:"Hydration Hero", desc:"8 glasses, 5 days running", earned:true},
-  {name:"Step Streak", desc:"10-day movement streak", earned:true},
-  {name:"Mindful Week", desc:"7 days of breathing breaks", earned:true},
-  {name:"Plate Balance", desc:"14 balanced meals logged", earned:false},
-  {name:"Foot Care Pro", desc:"4 weekly foot checks", earned:false},
+  {name:"Early Riser", desc:"7 days of morning foot checks", earned:true},
+  {name:"Step Streak", desc:"10-day running/walking streak", earned:true},
+  {name:"Mindful Week", desc:"7 days of meditation", earned:true},
+  {name:"Plate Balance", desc:"14 days of healthy and balanced food", earned:false},
+  {name:"Awesome foot care", desc:"4 weekly foot checks", earned:false},
   {name:"Steady 30", desc:"30-day overall consistency", earned:false},
-  {name:"Community Sprout", desc:"Invite a friend to grow", earned:false},
+  {name:"Local Foodie", desc:"Try out new healthy dishes", earned:false},
 ];
 
 const weekData = [
@@ -950,7 +949,7 @@ const scanPool = [
    sugar:"0g", carbs:"4.5g", fiber:"3g", gi:"Low", sodium:"49mg",
    flags:[], good:["No added sugar","Fiber + healthy fats slow sugar absorption"],
    alt:"Already a solid pick — a small handful (28g) is a good portion."},
-  {name:"Instant Noodle Cup", brand:"QuickMeal", verdict:"avoid",
+  {name:"Instant Noodle Cup", brand:"Omachi", verdict:"avoid",
    sugar:"2g", carbs:"55g", fiber:"1g", gi:"High", sodium:"1780mg",
    flags:["Very high sodium (1780mg)","Refined wheat flour, low fiber","Contains MSG"],
    good:[], alt:"Whole-grain noodles in a light broth with vegetables cuts sodium and carbs a lot."},
@@ -958,7 +957,7 @@ const scanPool = [
    sugar:"4g (natural)", carbs:"6g", fiber:"0g", gi:"Low", sodium:"50mg",
    flags:[], good:["No added sugar","High protein helps blunt blood sugar spikes"],
    alt:"Great as-is — add cinnamon or a few berries for flavor instead of sweetened versions."},
-  {name:"Fruit-Flavored Gummy Snacks", brand:"Chewy Bites", verdict:"avoid",
+  {name:"Gummy Snacks", brand:"Haribo", verdict:"avoid",
    sugar:"19g", carbs:"22g", fiber:"0g", gi:"High", sodium:"10mg",
    flags:["Corn syrup is the first ingredient","Artificial dyes","No fiber to offset sugar"],
    good:[], alt:"Fresh berries or apple slices give sweetness plus fiber to soften the sugar hit."},
